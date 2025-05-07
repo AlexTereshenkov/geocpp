@@ -1,0 +1,11 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+cc_library(
+    name = "rectangle",
+    srcs = ["rectangle.cc"],
+    hdrs = ["include/rectangle.hpp"],
+    #https: // bazel.build/tutorials/cpp-use-cases#add-include-paths
+    #show how to store headers in a separate directory to exercise copts
+    copts = ["-Isrc/geometry/include"],
+    visibility = ["//visibility:public"],
+)
