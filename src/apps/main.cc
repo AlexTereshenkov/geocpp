@@ -2,8 +2,12 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+// this comes from a header associated with a pre-compiled shared library
+#include "compiled/dates.hpp"
 
 int main(int argc, char *argv[]) {
+  std::cout << "Date: " << dates::current_date() << std::endl;
+
   double width = std::stod(argv[1]);
   double height = std::stod(argv[2]);
 
