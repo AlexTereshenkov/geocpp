@@ -1,0 +1,9 @@
+module(
+    name = "workspace",
+    repo_name = "geocpp",
+)
+
+bazel_dep(name = "rules_cc", version = "0.1.1")
+
+bazel_dep(name = "gazelle", version = "0.42.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "8.0.3", dev_dependency = True)
