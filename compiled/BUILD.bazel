@@ -1,0 +1,15 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+# Show how to use a library of which you only have a compiled version
+# (headers and a .so file); now other C++ targets in the repository
+# can depend on it
+# as per https://bazel.build/reference/be/c-cpp#cc_library_args:
+# .so, .lo, and .a files are pre-compiled files; Your library might
+# have these as srcs if it uses third-party code for which you don't
+# have source code.
+cc_library(
+    name = "dates",
+    srcs = ["dates.so"],
+    hdrs = ["dates.hpp"],
+    visibility = ["//visibility:public"],
+)
