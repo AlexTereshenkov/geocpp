@@ -8,3 +8,11 @@ cc_binary(
         "//src/geometry:rectangle",
     ],
 )
+
+cc_binary(
+    name = "math",
+    srcs = ["math.cc"],
+    deps = [
+        "@gcem",
+    ],
+)
