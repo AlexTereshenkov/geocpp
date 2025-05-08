@@ -1,0 +1,13 @@
+# the contents of this file is going to be inserted into the extracted
+# repository https://github.com/kthohr/gcem so that this becomes a dependency
+# Bazel targets can depend on
+package(default_visibility = ["//visibility:public"])
+
+# one has to inspect the third-party library to understand what build metadata needs to be created;
+# gcem happens to be a header-only library (https://en.wikipedia.org/wiki/Header-only)
+cc_library(
+    name = "gcem",
+    hdrs = glob(["include/**/*.hpp"]),
+    includes = ["include"],
+    strip_include_prefix = "include",
+)

@@ -9,3 +9,16 @@ bazel_dep(name = "catch2", version = "3.8.1")
 
 bazel_dep(name = "gazelle", version = "0.42.0", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "8.0.3", dev_dependency = True)
+
+# Add direct HTTP archive dependency on a library that is not built with Bazel
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# the archive file is going to be extracted at build time and the `build_file`
+# is going to be placed at the output directory (bazel-geocpp/external/+_repo_rules+gcem)
+http_archive(
+    name = "gcem",
+    build_file = "//third_party/gcem:BUILD.bazel.gen",
+    sha256 = "8e71a9f5b62956da6c409dda44b483f98c4a98ae72184f3aa4659ae5b3462e61",
+    strip_prefix = "gcem-1.18.0",
+    urls = ["https://github.com/kthohr/gcem/archive/v1.18.0.tar.gz"],
+)
