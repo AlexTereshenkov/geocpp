@@ -1,0 +1,14 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+genrule(
+    name = "header-generated-genrule",
+    outs = ["header-generated.hpp"],
+    cmd = "echo 'void x();' > $@",
+)
+
+cc_library(
+    name = "header-generated-lib",
+    srcs = ["lib.cc"],
+    hdrs = ["header-generated.hpp"],
+    visibility = ["//visibility:public"],
+)

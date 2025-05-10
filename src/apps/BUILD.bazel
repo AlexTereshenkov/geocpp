@@ -16,3 +16,11 @@ cc_binary(
         "@gcem",
     ],
 )
+
+cc_binary(
+    name = "genheader",
+    srcs = ["genheader.cc"],
+    deps = [
+        "//generated:header-generated-lib",
+    ],
+)
