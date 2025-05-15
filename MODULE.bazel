@@ -4,6 +4,7 @@ module(
 )
 
 bazel_dep(name = "rules_cc", version = "0.1.1")
+bazel_dep(name = "hermetic_cc_toolchain", version = "4.0.0")
 bazel_dep(name = "googletest", version = "1.16.0")  # gtest
 bazel_dep(name = "catch2", version = "3.8.1")
 
@@ -22,3 +23,19 @@ http_archive(
     strip_prefix = "gcem-1.18.0",
     urls = ["https://github.com/kthohr/gcem/archive/v1.18.0.tar.gz"],
 )
+
+toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
+
+# cannot use this due to an error
+# Error in remove: trying to mutate a frozen list value
+# toolchains.exec_platform(
+#     os = "linux",
+#     arch = "amd64",
+# )
+use_repo(toolchains, "zig_sdk")
+
+# do not register the toolchain here, but instead pass it on the command
+# line using the `--extra_toolchains` flag
+# register_toolchains(
+#     "@zig_sdk//toolchain:linux_amd64_gnu.2.31",
+# )

@@ -1,4 +1,26 @@
 common --cxxopt=-std=c++17
+common --verbose_failures
+
+# https://bazel.build/reference/command-line-reference#common_options-flag--enable_platform_specific_config
+# this is to avoid adding "--config=linux" to the command
+# common --enable_platform_specific_config
+
+# https://bazel.build/reference/command-line-reference#build-flag--sandbox_add_mount_pair
+common:hermetic-linux-amd64 --sandbox_add_mount_pair=/tmp/zig-cache
+# https://bazel.build/reference/command-line-reference#build-flag--sandbox_writable_path
+common:hermetic-linux-amd64 --sandbox_writable_path=/tmp/zig-cache
 
 test --test_output=all
 test --test_summary=detailed
+
+# unclear what is the purpose of these in this context
+# common --incompatible_enable_cc_toolchain_resolution
+# common --incompatible_use_cc_configure_from_rules_cc
+
+build:hermetic-linux-amd64 --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build:hermetic-linux-amd64 --repo_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+
+build:hermetic-linux-amd64 --platforms @zig_sdk//platform:linux_amd64
+# the toolchain name must match to what is being registered in MODULE.bazel with `register_toolchains()`;
+# attempting to use a not registered toolchain is bound to fail
+build:hermetic-linux-amd64 --extra_toolchains="@zig_sdk//toolchain:linux_amd64_gnu.2.31"

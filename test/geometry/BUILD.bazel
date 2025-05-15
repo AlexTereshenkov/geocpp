@@ -1,17 +1,31 @@
-load("@rules_cc//cc:cc_test.bzl", "cc_test")
+load("//:test/defs.bzl", "cc_test_custom")
 
-cc_test(
+# The test targets built with a hermetic toolchain results in creation of test binaries
+# that are linked to some shared libraries in the `bazel-out` directories; they fail to
+# run with the `bazel test` command:
+#
+# rectangle-catch2-test: error while loading shared libraries: bazel-out/k8-fastbuild/
+# bin/_solib_k8/libsrc_Sgeometry_Slibrectangle.so: cannot open shared object file: No such file or directory
+#
+# To be able to run them with `bazel test` command, user libraries are linked statically
+# (if a static version is available), but system libraries (excluding C/C++ runtime libraries)
+# are linked dynamically. To have both test targets (statically and dynamically linked),
+# a simple macro is used to generate two identical targets with a different linking type and a tag.
+
+cc_test_custom(
     name = "rectangle-gtest-test",
     srcs = ["rectangle_gtest_test.cc"],
+    linkstatic = (True, False),
     deps = [
         "//src/geometry:rectangle",
         "@googletest//:gtest_main",
     ],
 )
 
-cc_test(
+cc_test_custom(
     name = "rectangle-catch2-test",
     srcs = ["rectangle_catch2_test.cc"],
+    linkstatic = (True, False),
     deps = [
         "//src/geometry:rectangle",
         "@catch2//:catch2_main",
