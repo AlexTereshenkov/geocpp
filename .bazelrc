@@ -6,9 +6,9 @@ common --verbose_failures
 # common --enable_platform_specific_config
 
 # https://bazel.build/reference/command-line-reference#build-flag--sandbox_add_mount_pair
-common --sandbox_add_mount_pair=/tmp/zig-cache
+common:hermetic-linux-amd64 --sandbox_add_mount_pair=/tmp/zig-cache
 # https://bazel.build/reference/command-line-reference#build-flag--sandbox_writable_path
-common --sandbox_writable_path=/tmp/zig-cache
+common:hermetic-linux-amd64 --sandbox_writable_path=/tmp/zig-cache
 
 test --test_output=all
 test --test_summary=detailed
@@ -17,7 +17,6 @@ test --test_summary=detailed
 # common --incompatible_enable_cc_toolchain_resolution
 # common --incompatible_use_cc_configure_from_rules_cc
 
-# setting these
 build:hermetic-linux-amd64 --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 build:hermetic-linux-amd64 --repo_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 
