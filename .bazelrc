@@ -24,3 +24,16 @@ build:hermetic-linux-amd64 --platforms @zig_sdk//platform:linux_amd64
 # the toolchain name must match to what is being registered in MODULE.bazel with `register_toolchains()`;
 # attempting to use a not registered toolchain is bound to fail
 build:hermetic-linux-amd64 --extra_toolchains="@zig_sdk//toolchain:linux_amd64_gnu.2.31"
+
+# build CMake projects in a Docker container (for foreign_cc rule)
+common:docker-cmake --platforms=//platforms:docker-cmake
+common:docker-cmake --spawn_strategy=docker
+common:docker-cmake --experimental_enable_docker_sandbox
+common:docker-cmake --experimental_docker_image="cmake-build-env:latest"
+
+# for ensuring the host's toolchain is not being used 
+# (debian:stable-slim won't have any C++ compilers)
+common:docker-debian --platforms=//platforms:docker-debian
+common:docker-debian --spawn_strategy=docker
+common:docker-debian --experimental_enable_docker_sandbox
+common:docker-debian --experimental_docker_image="debian:stable-slim"
