@@ -3,11 +3,16 @@ module(
     repo_name = "geocpp",
 )
 
+# Bazel specific
+bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_cc", version = "0.1.1")
 bazel_dep(name = "hermetic_cc_toolchain", version = "4.0.0")
+
+# Third-party packages
 bazel_dep(name = "googletest", version = "1.16.0")  # gtest
 bazel_dep(name = "catch2", version = "3.8.1")
 
+# Dev dependencies
 bazel_dep(name = "gazelle", version = "0.42.0", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "8.0.3", dev_dependency = True)
 
