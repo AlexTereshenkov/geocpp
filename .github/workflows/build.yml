@@ -58,20 +58,34 @@ jobs:
           mkdir -p /tmp/zig-cache && bazel build \
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-${{ matrix.arch }} \
-            //...
+            //src/apps:math-${{ matrix.arch }}
 
-      # - name: Test x86
-      #   run: |
-      #     mkdir -p /tmp/zig-cache && bazel test \
-      #       --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-      #       --config=hermetic-linux-amd64 \
-      #       --test_tag_filters=static \
-      #       //...
-      
-      # - name: Test aarch64
-      #   run: |
-      #     mkdir -p /tmp/zig-cache && bazel test \
-      #       --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-      #       --config=hermetic-linux-arm64 \
-      #       --test_tag_filters=static \
-      #       //...
+  test-hermetic:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # from https://github.com/bazel-contrib/setup-bazel
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Share build cache between workflows.
+          disk-cache: true
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      - name: Test ${{ matrix.arch }}
+        run: |
+          mkdir -p /tmp/zig-cache && bazel test \
+            --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+            --config=hermetic-linux-${{ matrix.arch }} \
+            --test_tag_filters=static \
+            //...
