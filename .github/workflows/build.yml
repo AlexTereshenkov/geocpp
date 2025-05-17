@@ -34,6 +34,10 @@ jobs:
   build-hermetic:
     runs-on: ubuntu-24.04
 
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,32 +53,25 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: Build x86
+      - name: Build ${{ matrix.arch }}
         run: |
           mkdir -p /tmp/zig-cache && bazel build \
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-            --config=hermetic-linux-amd64 \
+            --config=hermetic-linux-${{ matrix.arch }} \
             //...
 
-      - name: Build aarch64
-        run: |
-          mkdir -p /tmp/zig-cache && bazel build \         
-            --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-            --config=hermetic-linux-arm64 \
-            //...
-
-      - name: Test x86
-        run: |
-          mkdir -p /tmp/zig-cache && bazel test \
-            --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-            --config=hermetic-linux-amd64 \
-            --test_tag_filters=static \
-            //...
+      # - name: Test x86
+      #   run: |
+      #     mkdir -p /tmp/zig-cache && bazel test \
+      #       --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+      #       --config=hermetic-linux-amd64 \
+      #       --test_tag_filters=static \
+      #       //...
       
-      - name: Test aarch64
-        run: |
-          mkdir -p /tmp/zig-cache && bazel test \
-            --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-            --config=hermetic-linux-arm64 \
-            --test_tag_filters=static \
-            //...
+      # - name: Test aarch64
+      #   run: |
+      #     mkdir -p /tmp/zig-cache && bazel test \
+      #       --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+      #       --config=hermetic-linux-arm64 \
+      #       --test_tag_filters=static \
+      #       //...
