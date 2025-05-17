@@ -10,7 +10,7 @@ cc_binary(
 )
 
 cc_binary(
-    name = "math",
+    name = "math-amd64",
     srcs = ["math.cc"],
     deps = [
         "@gcem",
