@@ -18,6 +18,14 @@ cc_binary(
 )
 
 cc_binary(
+    name = "math-arm64",
+    srcs = ["math.cc"],
+    deps = [
+        "@gcem",
+    ],
+)
+
+cc_binary(
     name = "genheader",
     srcs = ["genheader.cc"],
     deps = [
