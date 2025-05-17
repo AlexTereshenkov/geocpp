@@ -51,21 +51,21 @@ jobs:
 
       - name: Build x86
         run: |
-          bazel build \
+          mkdir -p /tmp/zig-cache && bazel build \
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-amd64 \
             //...
 
       - name: Build aarch64
         run: |
-          bazel build \         
+          mkdir -p /tmp/zig-cache && bazel build \         
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-arm64 \
             //...
 
       - name: Test x86
         run: |
-          bazel test \
+          mkdir -p /tmp/zig-cache && bazel test \
             --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-amd64 \
             --test_tag_filters=static \
@@ -73,7 +73,7 @@ jobs:
       
       - name: Test aarch64
         run: |
-          bazel test \
+          mkdir -p /tmp/zig-cache && bazel test \
             --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-arm64 \
             --test_tag_filters=static \
