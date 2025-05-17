@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-host:
     runs-on: ubuntu-24.04
 
     steps:
@@ -20,10 +20,61 @@ jobs:
         with:
           # Avoid downloading Bazel every time.
           bazelisk-cache: true
-          # Store build cache per workflow.
-          disk-cache: ${{ github.workflow }}
+          # Share build cache between workflows.
+          disk-cache: true
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: Build with Bazel
+      - name: Build
         run: bazel build //...
+
+      - name: Test
+        run: bazel test //...
+
+  build-hermetic:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # from https://github.com/bazel-contrib/setup-bazel
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Share build cache between workflows.
+          disk-cache: true
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      - name: Build x86
+        run: |
+          bazel build \                             
+            --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+            --config=hermetic-linux-amd64 \
+            //...
+
+      - name: Build aarch64
+        run: |
+          bazel build \                             
+            --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+            --config=hermetic-linux-arm64 \
+            //...
+
+      - name: Test x86
+        run: |
+          bazel test \
+            --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+            --config=hermetic-linux-amd64 \
+            --test_tag_filters=static \
+            //...
+      
+      - name: Test aarch64
+        run: |
+          bazel test \
+            --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+            --config=hermetic-linux-arm64 \
+            --test_tag_filters=static \
+            //...
