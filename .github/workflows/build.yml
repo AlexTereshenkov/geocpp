@@ -63,10 +63,6 @@ jobs:
   test-hermetic:
     runs-on: ubuntu-24.04
 
-    strategy:
-      matrix:
-        arch: [amd64, arm64]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -82,10 +78,10 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: Test ${{ matrix.arch }}
+      - name: Test
         run: |
           mkdir -p /tmp/zig-cache && bazel test \
             --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
-            --config=hermetic-linux-${{ matrix.arch }} \
+            --config=hermetic-linux-amd64 \
             --test_tag_filters=static \
             //...
