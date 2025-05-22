@@ -40,13 +40,13 @@ bazel test \
 
 ## Cross-compile
 
-Using [uber/hermetic_cc_toolchain`](https://github.com/uber/hermetic_cc_toolchain), one can cross-compile a target
+Using [uber/hermetic_cc_toolchain](https://github.com/uber/hermetic_cc_toolchain), one can cross-compile a target
 such as a binary executable.
 
 Build a `linux-arm64` binary on `linux-amd64` device:
 
 ```shell
-$ bazel build \                             
+$ bazel build \
     --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
     --config=hermetic-linux-arm64 \
     //src/apps:math-arm64
@@ -57,7 +57,7 @@ $ readelf -h bazel-bin/src/apps/math-arm64 | grep Machine
 
 After copying the binary executable to a `linux-arm64` device:
 
-```
+```shell
 $ uname -m
 aarch64
 
@@ -71,9 +71,31 @@ $ ldd math-arm64
 
 Using Docker to emulate the `linux-arm64` target platform with QEMU:
 
-```
+```shell
 $ docker build -t ubuntu-arm64 --platform linux/arm64 -f platforms/emulation/Dockerfile --load .
 $ docker run --rm -it -v ./release:/home/release --platform linux/arm64 ubuntu-arm64:latest
 # /home/release/math-arm64 1
 The cos of 1 is: 0.540302
+```
+
+## Cross compile an application with a static library
+
+```shell
+# building for x86
+bazel build \
+    --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+    --config=hermetic-linux-amd64 \
+    --define buildenv=x86 //src/apps:main
+
+# building for arm64
+bazel build \
+    --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+    --config=hermetic-linux-arm64 \
+    --define buildenv=arm64 //src/apps:main
+
+# fallback to x86 with no explicit configuration passed
+bazel build \
+    --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+    --config=hermetic-linux-amd64 \
+    //src/apps:main
 ```

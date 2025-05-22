@@ -1,0 +1,17 @@
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
+# using what hermetic toolchain the build will happen
+string_flag(
+    name = "buildenv",
+    build_setting_default = "x86",
+)
+
+config_setting(
+    name = "arm-build",
+    values = {"define": "buildenv=arm"},
+)
+
+config_setting(
+    name = "x86-build",
+    values = {"define": "buildenv=x86"},
+)
