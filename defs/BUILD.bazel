@@ -1,6 +1,6 @@
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
 
-# using what hermetic toolchain the build will happen
+# determine what hermetic toolchain the build should use
 string_flag(
     name = "buildenv",
     build_setting_default = "x86",
