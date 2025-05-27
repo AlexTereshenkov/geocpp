@@ -55,10 +55,12 @@ jobs:
 
       - name: Build ${{ matrix.arch }}
         run: |
+          mkdir -p dist/
           mkdir -p /tmp/zig-cache && bazel build \
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-${{ matrix.arch }} \
-            //src/apps:math-${{ matrix.arch }}
+            //src/apps:math
+          cp bazel-bin/src/apps/math dist/math-${{ matrix.arch }}
 
   test-hermetic:
     runs-on: ubuntu-24.04

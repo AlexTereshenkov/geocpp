@@ -1,15 +1,19 @@
-load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_import.bzl", "cc_import")
 
-# Show how to use a library of which you only have a compiled version
-# (headers and a .so file); now other C++ targets in the repository
-# can depend on it
-# as per https://bazel.build/reference/be/c-cpp#cc_library_args:
-# .so, .lo, and .a files are pre-compiled files; Your library might
-# have these as srcs if it uses third-party code for which you don't
-# have source code.
-cc_library(
-    name = "dates",
-    srcs = ["dates.so"],
+# Show how to use a static library of which you only have a compiled version
+# (headers and an `.a` file); now other C++ targets in the repository
+# can depend on it.
+cc_import(
+    name = "libdates",
     hdrs = ["dates.hpp"],
+    static_library = select({
+        "//defs:arm-build": "libdates_arm64.a",
+        "//defs:x86-build": "libdates_x86_64.a",
+        # fallback to x86_64 if no value is passed explicitly
+        "//conditions:default": "libdates_x86_64.a",
+    }),
     visibility = ["//visibility:public"],
+    # If alwayslink is turned on, it will be forced
+    # to be linked into any binary that depends on it
+    alwayslink = True,
 )
