@@ -95,7 +95,7 @@ jobs:
             //...
 
   test-arm64-emulated:
-      name: Run on emulated arm64 (QEMU)
+      name: run-arm64-binary-docker 
       needs: build-hermetic
       runs-on: ubuntu-24.04
       steps:
@@ -111,4 +111,4 @@ jobs:
         - name: Run binary in an arm64 Docker container
           run: |
             chmod +x ./bin/math-arm64
-            docker run --rm -v "$PWD/bin:/app" --platform linux/arm64 ubuntu bash -c "/app/math-arm64 1"
+            docker run --rm -v "$PWD/bin:/app" --platform linux/arm64 ubuntu bash -c "file /app/math-arm64 && /app/math-arm64 1"
