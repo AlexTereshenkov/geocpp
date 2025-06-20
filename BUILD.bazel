@@ -8,3 +8,11 @@ buildifier(
 )
 
 gazelle(name = "gazelle")
+
+genrule(
+    name = "clang_format",
+    srcs = ["@llvm_toolchain//:bin/clang-format"],
+    outs = ["clang-format"],
+    cmd = "cat $< > $@",
+    executable = True,
+)

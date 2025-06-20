@@ -31,6 +31,11 @@ jobs:
       - name: Test
         run: bazel test //...
 
+      - name: Lint
+        # run clang-format without modifying the files and treat any formatting 
+        # discrepancies as errors, causing the command to return a non-zero exit code
+        run: bazel run //:clang-format -- --dry-run -Werror **/*.cc **/*.hpp
+
   build-hermetic:
     runs-on: ubuntu-24.04
 
@@ -67,7 +72,33 @@ jobs:
         with:
           name: math-arm64
           path: dist/math-arm64
-          
+
+  build-hermetic-llvm:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        # TODO: add arm64 
+        arch: [amd64,]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          bazelisk-cache: true
+          disk-cache: true
+          repository-cache: true
+
+      - name: Build ${{ matrix.arch }}
+        run: |
+          bazel build \
+            --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
+            --config=hermetic-linux-${{ matrix.arch }}-llvm \
+            //src/apps:math         
+
   test-hermetic:
     runs-on: ubuntu-24.04
 
