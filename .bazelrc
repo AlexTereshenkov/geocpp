@@ -55,3 +55,9 @@ common:docker-debian --platforms=//platforms:docker-debian
 common:docker-debian --spawn_strategy=docker
 common:docker-debian --experimental_enable_docker_sandbox
 common:docker-debian --experimental_docker_image="debian:stable-slim"
+
+# for spawning some actions in a Docker container
+common:docker-container --platforms=//platforms:docker-container
+common:docker-container --spawn_strategy=docker
+common:docker-container --experimental_enable_docker_sandbox
+common:docker-container --experimental_docker_image="docker-container-build-env:latest"

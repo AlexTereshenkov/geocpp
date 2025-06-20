@@ -34,7 +34,9 @@ jobs:
       - name: Lint
         # run clang-format without modifying the files and treat any formatting 
         # discrepancies as errors, causing the command to return a non-zero exit code
-        run: bazel run //:clang-format -- --dry-run -Werror **/*.cc **/*.hpp
+        run: |
+          docker build -t docker-container-build-env -f platforms/advanced/Dockerfile --load .
+          bazel run --config="docker-container" //:clang-format -- --dry-run -Werror **/*.cc **/*.hpp
 
   build-hermetic:
     runs-on: ubuntu-24.04
