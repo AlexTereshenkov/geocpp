@@ -109,3 +109,25 @@ bazel run @hedron_compile_commands//:refresh_all
 ```
 
 This lets the IDE to understand the source code of a Bazel project.
+
+## Run clang tools
+
+Depending on the runtime environment, you might need to install `libinfo5`:
+
+```
+wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
+```
+
+If arguments can be passed to a `native_binary`, then `native_binary` could be used
+
+```
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+native_binary(
+    name = "clang_format",
+    src = "@llvm_toolchain//:bin/clang-format",
+    out = "clang_format",
+)
+```
+
+Otherwise, a `genrule` can be used.
