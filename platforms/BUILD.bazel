@@ -23,7 +23,6 @@ platform(
     tags = ["platform-docker"],
 )
 
-
 platform(
     name = "docker-debian",
     constraint_values = [

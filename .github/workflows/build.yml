@@ -35,8 +35,11 @@ jobs:
         # run clang-format without modifying the files and treat any formatting 
         # discrepancies as errors, causing the command to return a non-zero exit code
         run: |
-          docker build -t docker-container-build-env -f platforms/advanced/Dockerfile --load .
-          bazel run --config="docker-container" //:clang-format -- --dry-run -Werror **/*.cc **/*.hpp
+          # running build actions in a sandbox does not seem to be supported by toolchains_llvm
+          # docker build -t docker-container-build-env -f platforms/advanced/Dockerfile --load .
+          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          bazel run //:clang-format -- --dry-run -Werror **/*.cc **/*.hpp
 
   build-hermetic:
     runs-on: ubuntu-24.04
@@ -96,6 +99,8 @@ jobs:
 
       - name: Build ${{ matrix.arch }}
         run: |
+          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
           bazel build \
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-${{ matrix.arch }}-llvm \
