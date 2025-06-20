@@ -99,3 +99,13 @@ bazel build \
     --config=hermetic-linux-amd64 \
     //src/apps:main
 ```
+
+# Use `clangd` for IDE integration
+
+Run this to generate the `compile_commands.json` file in the root of the workspace.
+
+```
+bazel run @hedron_compile_commands//:refresh_all
+```
+
+This lets the IDE to understand the source code of a Bazel project.

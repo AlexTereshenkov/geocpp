@@ -1,6 +1,5 @@
 #include "src/geometry/include/rectangle.hpp"
 #include <iostream>
-#include <stdexcept>
 #include <string>
 // this comes from a header associated with a pre-compiled shared library
 #include "compiled/dates.hpp"
