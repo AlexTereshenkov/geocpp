@@ -71,7 +71,7 @@ jobs:
           # this is necessary for clang-tidy to find all the includes
           bazel run @hedron_compile_commands//:refresh_all
           ls compile_commands.json
-          
+
           # rules_multitool let you run a tool in the workspace root, but should it stop working, you can
           # always do `$(realpath src/**/*.cc)` instead
 #          bazel run @multitool//tools/clang-tidy:workspace_root -- \
