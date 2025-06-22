@@ -75,11 +75,6 @@ jobs:
           # rules_multitool let you run a tool in the workspace root (@multitool//tools/clang-tidy:workspace_root), 
           # but it doesn't seem to work in GHA, so using realpath instead
           shopt -s globstar
-          bazel run @multitool//tools/clang-tidy -- \
-            --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
-            -p $(realpath compile_commands.json) \
-            $(realpath src/**/*.cc src/**/*.hpp)
-
           bazel run @multitool//tools/clang-tidy:workspace_root -- \
             --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
             -p compile_commands.json \
