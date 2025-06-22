@@ -1,5 +1,5 @@
 build:
-	find . -regex '.*\.\(cc\|hpp\)' -exec clang-format -i {} +
+	find . -regex '.*\.\(cc\|hpp\)' -exec clang-format --verbose -i {} +
 	bazel mod tidy
 	bazel test //...
 	bazel run //:buildifier

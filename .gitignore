@@ -1,2 +1,7 @@
 /bazel-*
 /release/
+.cache/
+.clwb/
+.idea/
+
+compile_commands.json

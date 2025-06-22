@@ -108,7 +108,7 @@ Run this to generate the `compile_commands.json` file in the root of the workspa
 bazel run @hedron_compile_commands//:refresh_all
 ```
 
-This lets the IDE to understand the source code of a Bazel project.
+This lets the IDE understand the source code of a Bazel project.
 
 ## Run clang tools
 

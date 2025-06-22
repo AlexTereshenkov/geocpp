@@ -31,15 +31,53 @@ jobs:
       - name: Test
         run: bazel test //...
 
-      - name: Lint
-        # run clang-format without modifying the files and treat any formatting 
+  lint-host:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # from https://github.com/bazel-contrib/setup-bazel
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Share build cache between workflows.
+          disk-cache: true
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      - name: clang-format
+        # run clang-format without modifying the files and treat any formatting
         # discrepancies as errors, causing the command to return a non-zero exit code
         run: |
           # running build actions in a sandbox does not seem to be supported by toolchains_llvm
           # docker build -t docker-container-build-env -f platforms/advanced/Dockerfile --load .
           wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
           sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
-          bazel run //:clang-format -- --dry-run -Werror **/*.cc **/*.hpp
+          shopt -s globstar
+          bazel run //:clang-format -- --verbose --dry-run -Werror $(realpath **/*.cc **/*.hpp)
+
+      - name: clang-tidy
+        run: |
+          # certain headers won't be found when using a static clang-tidy binary so need to install clang
+          # and pass extra include paths to the compiler command line;
+          sudo apt install clang-19
+          
+          # a header needs to be generated first
+          bazel build //generated:header-generated-genrule 
+  
+          # this is necessary for clang-tidy to find all the includes
+          bazel run @hedron_compile_commands//:refresh_all
+          
+          # rules_multitool let you run a tool in the workspace root
+          shopt -s globstar
+          bazel run @multitool//tools/clang-tidy:workspace_root -- \
+            --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
+            -p compile_commands.json \
+            src/**/*.cc src/**/*.hpp
 
   build-hermetic:
     runs-on: ubuntu-24.04

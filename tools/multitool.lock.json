@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/theoremlp/rules_multitool/main/lockfile.schema.json",
+  "clang-tidy": {
+    "binaries": [
+      {
+        "kind": "file",
+        "url": "https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-46b8640/clang-tidy-19_linux-amd64",
+        "sha256": "0125d3077d4bb322a05afb36d62dbc4f5af8808c0e7bd80ae768d6b416937414",
+        "os": "linux",
+        "cpu": "x86_64"
+      }
+    ]
+  }
+}
