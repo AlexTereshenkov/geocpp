@@ -72,8 +72,7 @@ jobs:
           # this is necessary for clang-tidy to find all the includes
           bazel run @hedron_compile_commands//:refresh_all
           
-          # rules_multitool let you run a tool in the workspace root (@multitool//tools/clang-tidy:workspace_root), 
-          # but it doesn't seem to work in GHA, so using realpath instead
+          # rules_multitool let you run a tool in the workspace root
           shopt -s globstar
           bazel run @multitool//tools/clang-tidy:workspace_root -- \
             --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
