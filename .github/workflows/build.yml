@@ -66,17 +66,23 @@ jobs:
           sudo apt install clang-19
           
           # a header needs to be generated first
-          bazel build //... # generated:header-generated-genrule
+          bazel build //... 
   
           # this is necessary for clang-tidy to find all the includes
           bazel run @hedron_compile_commands//:refresh_all
-
+          ls compile_commands.json
+          
           # rules_multitool let you run a tool in the workspace root, but should it stop working, you can
           # always do `$(realpath src/**/*.cc)` instead
-          bazel run @multitool//tools/clang-tidy:workspace_root -- \
+#          bazel run @multitool//tools/clang-tidy:workspace_root -- \
+#            --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
+#            -p $(realpath compile_commands.json) \
+#            $(realpath src/**/*.cc) $(realpath src/**/*.hpp)
+
+          bazel run @multitool//tools/clang-tidy -- \
             --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
-            -p compile_commands.json \
-            src/**/*.cc src/**/*.hpp
+            -p $(realpath compile_commands.json) \
+            $(realpath src/**/*.cc src/**/*.hpp)
 
   build-hermetic:
     runs-on: ubuntu-24.04
