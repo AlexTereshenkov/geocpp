@@ -80,6 +80,11 @@ jobs:
             -p $(realpath compile_commands.json) \
             $(realpath src/**/*.cc src/**/*.hpp)
 
+          bazel run @multitool//tools/clang-tidy:workspace_root -- \
+            --extra-arg="-I/usr/lib/llvm-19/lib/clang/19/include" \
+            -p compile_commands.json \
+            src/**/*.cc src/**/*.hpp
+
   build-hermetic:
     runs-on: ubuntu-24.04
 
