@@ -66,7 +66,7 @@ jobs:
           sudo apt install clang-19
           
           # a header needs to be generated first
-          bazel build //generated:header-generated-genrule
+          bazel build //... # generated:header-generated-genrule
   
           # this is necessary for clang-tidy to find all the includes
           bazel run @hedron_compile_commands//:refresh_all
