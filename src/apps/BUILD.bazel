@@ -1,12 +1,19 @@
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("//defs:release.bzl", "release_application")
 
-cc_binary(
-    name = "main",
+release_application(
+    name = "release",
     srcs = ["main.cc"],
     deps = [
         "//compiled:libdates",
         "//src/geometry:rectangle",
     ],
+)
+
+sh_binary(
+    name = "release_metadata",
+    srcs = ["release_metadata.sh"],
 )
 
 cc_binary(
