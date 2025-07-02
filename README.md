@@ -131,3 +131,11 @@ native_binary(
 ```
 
 Otherwise, a `genrule` can be used.
+
+## Run topiary
+
+The configuration file is picked up automatically from the `.topiary` directory.
+
+```shell
+$ bazel run @multitool//tools/topiary:workspace_root -- format tools/multitool.lock.json
+```
