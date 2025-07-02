@@ -131,3 +131,13 @@ native_binary(
 ```
 
 Otherwise, a `genrule` can be used.
+
+
+## Create an archive file
+
+```shell
+$ bazel build //:archive
+$ bazel build //:archive-lean 
+$ tar -O -xf bazel-bin/archive.tar LICENSE
+$ tar -O -xf bazel-bin/archive-lean.tar LICENSE
+```

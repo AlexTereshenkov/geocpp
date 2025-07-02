@@ -1,5 +1,7 @@
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@gazelle//:def.bzl", "gazelle")
+load("@rules_pkg//pkg/private/tar:tar.bzl", "pkg_tar")
+load("@tar.bzl", "tar")
 
 buildifier(
     name = "buildifier",
@@ -15,4 +17,18 @@ genrule(
     outs = ["clang-format"],
     cmd = "cat $< > $@",
     executable = True,
+)
+
+# save a file into a .tar archive
+pkg_tar(
+    name = "archive",
+    srcs = ["//:LICENSE"],
+    # Use an "epoch" time for the modification time
+    # of each file inside the archive.
+    stamp = 0,
+)
+
+tar(
+    name = "archive-lean",
+    srcs = ["//:LICENSE"],
 )
