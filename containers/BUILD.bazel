@@ -1,0 +1,26 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+load("@tar.bzl", "tar")
+
+package(default_visibility = ["//visibility:public"])
+
+# Packaging the release binary into a tar archive, which is needed by oci_image rule
+tar(
+    name = "tar",
+    srcs = ["//src/apps:release"],
+)
+
+# Create an image
+oci_image(
+    name = "image",
+    base = "@cc-image",
+    entrypoint = ["/src/apps/release.app"],
+    tars = [":tar"],
+)
+
+# Use with 'bazel run' to load the oci image into a container runtime.
+# The image is designated using `repo_tags` attribute.
+oci_load(
+    name = "image_load",
+    image = ":image",
+    repo_tags = ["release:latest"],
+)

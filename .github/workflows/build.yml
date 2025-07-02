@@ -175,6 +175,33 @@ jobs:
             --test_tag_filters=static \
             //...
 
+
+  build-docker-container:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # from https://github.com/bazel-contrib/setup-bazel
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Share build cache between workflows.
+          disk-cache: true
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      - name: Create and load Docker image
+        run: |
+          bazel run //containers:image_load
+
+      - name: Run image with Docker
+        run: |
+          docker run --rm release:latest 14 3
+
   test-arm64-emulated:
       name: run-arm64-binary-docker 
       needs: build-hermetic
