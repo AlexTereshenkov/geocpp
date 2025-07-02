@@ -10,5 +10,18 @@
         "cpu": "x86_64"
       }
     ]
+  },
+  "topiary": {
+    "binaries": [
+      {
+        "kind": "archive",
+        "file": "topiary-cli-x86_64-unknown-linux-gnu/topiary",
+        "type": "tar.xz",
+        "url": "https://github.com/tweag/topiary/releases/download/v0.6.1/topiary-cli-x86_64-unknown-linux-gnu.tar.xz",
+        "sha256": "0e92b430dfd3aa0cc5033579fd546f9df9a66117888ed526c61b95fe58b2c9a1",
+        "os": "linux",
+        "cpu": "x86_64"
+      }
+    ]
   }
 }
