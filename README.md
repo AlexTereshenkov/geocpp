@@ -141,3 +141,11 @@ $ bazel build //:archive-lean
 $ tar -O -xf bazel-bin/archive.tar LICENSE
 $ tar -O -xf bazel-bin/archive-lean.tar LICENSE
 ```
+
+## Run topiary
+
+The configuration file is picked up automatically from the `.topiary` directory.
+
+```shell
+$ bazel run @multitool//tools/topiary:workspace_root -- format tools/multitool.lock.json
+```
