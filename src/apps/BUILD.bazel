@@ -2,6 +2,8 @@ load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//defs:release.bzl", "release_application")
 
+package(default_visibility = ["//visibility:public"])
+
 release_application(
     name = "release",
     srcs = ["main.cc"],
