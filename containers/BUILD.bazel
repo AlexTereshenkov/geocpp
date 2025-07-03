@@ -1,4 +1,4 @@
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@tar.bzl", "tar")
 
 package(default_visibility = ["//visibility:public"])
@@ -23,4 +23,11 @@ oci_load(
     name = "image_load",
     image = ":image",
     repo_tags = ["release:latest"],
+)
+
+oci_push(
+    name = "image_push",
+    image = ":image",
+    remote_tags = ["0.0.1"],
+    repository = "localhost:5000/apps/cpp",
 )
