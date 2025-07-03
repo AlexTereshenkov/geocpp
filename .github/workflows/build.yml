@@ -202,6 +202,36 @@ jobs:
         run: |
           docker run --rm release:latest 14 3
 
+  push-docker-registry:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # from https://github.com/bazel-contrib/setup-bazel
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Share build cache between workflows.
+          disk-cache: true
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      - name: Set up Docker registry
+        run: |
+          docker run -d -p 5000:5000 --name registry registry:2
+
+      - name: Create and load Docker image
+        run: |
+          bazel run //containers:image_push
+
+      - name: List registry images
+        run: |
+          curl http://localhost:5000/v2/apps/cpp/tags/list
+
   test-arm64-emulated:
       name: run-arm64-binary-docker 
       needs: build-hermetic
