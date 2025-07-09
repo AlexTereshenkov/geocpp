@@ -49,6 +49,11 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
+      - name: bazel-dwyu
+        run: |
+          bazel build --aspects=//tools:aspect.bzl%your_dwyu_aspect --output_groups=dwyu //... || true
+          bazel run @depend_on_what_you_use//:apply_fixes -- --fix-all --dry-run
+
       - name: clang-format
         # run clang-format without modifying the files and treat any formatting
         # discrepancies as errors, causing the command to return a non-zero exit code
