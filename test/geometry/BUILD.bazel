@@ -18,6 +18,7 @@ cc_test_custom(
     linkstatic = (True, False),
     deps = [
         "//src/geometry:rectangle",
+        "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
 )
@@ -28,6 +29,7 @@ cc_test_custom(
     linkstatic = (True, False),
     deps = [
         "//src/geometry:rectangle",
+        "@catch2",
         "@catch2//:catch2_main",
     ],
 )
