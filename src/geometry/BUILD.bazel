@@ -4,8 +4,9 @@ cc_library(
     name = "rectangle",
     srcs = ["rectangle.cc"],
     hdrs = ["include/rectangle.hpp"],
-    #https: // bazel.build/tutorials/cpp-use-cases#add-include-paths
-    #show how to store headers in a separate directory to exercise copts
-    copts = ["-Isrc/geometry/include"],
+    # https://bazel.build/tutorials/cpp-use-cases#add-include-paths
+    # show how to store headers in a separate directory to exercise copts;
+    # with `copts = ["-Isrc/geometry/include"]`, no need for `strip_include_prefix`
+    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
 )
