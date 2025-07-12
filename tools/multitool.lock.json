@@ -10,5 +10,17 @@
         "cpu": "x86_64"
       }
     ]
+  },
+  "iwyu": {
+    "binaries": [
+      {
+        "file": "iwyu-0.20-x86_64-linux-gnu/bin/include-what-you-use",
+        "kind": "archive",
+        "url": "https://github.com/storypku/bazel_iwyu/releases/download/0.20/iwyu-0.20-x86_64-linux-gnu.tar.xz",
+        "sha256": "684e3e7193d6a8ee77ed485c0378f64e8c13f8a30c0709545d13c8c1655811c5",
+        "os": "linux",
+        "cpu": "x86_64"
+      }
+    ]
   }
 }
