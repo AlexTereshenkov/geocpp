@@ -1,7 +1,9 @@
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg/private/tar:tar.bzl", "pkg_tar")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("@tar.bzl", "tar")
+load("//defs:analysis.bzl", "static_analysis")
 
 buildifier(
     name = "buildifier",
@@ -31,4 +33,23 @@ pkg_tar(
 tar(
     name = "archive-lean",
     srcs = ["//:LICENSE"],
+)
+
+sh_binary(
+    name = "analyzer",
+    srcs = ["//tools:analyzer.sh"],
+    visibility = ["//visibility:public"],
+)
+
+static_analysis(
+    name = "analysis",
+    # TODO: find a mechanism to fetch all .cc files from the whole repo as sources
+    # (repository rule / macro / etc) to avoid listing every source file manually;
+    # remember, glob does not match files in subpackages so cannot use glob(["**/*.cc"]).
+    srcs = [
+        "//src/apps:main.cc",
+        "//src/apps:math.cc",
+        "//src/geometry:rectangle.cc",
+    ],
+    analyzer = ":analyzer",
 )
