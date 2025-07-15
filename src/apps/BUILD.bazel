@@ -4,6 +4,12 @@ load("//defs:release.bzl", "release_application")
 
 package(default_visibility = ["//visibility:public"])
 
+filegroup(
+    name = "cc-sources",
+    srcs = glob(["*.cc"]),
+    tags = ["static-analysis"],
+)
+
 release_application(
     name = "release",
     srcs = ["main.cc"],

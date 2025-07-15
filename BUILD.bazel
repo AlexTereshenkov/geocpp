@@ -35,6 +35,14 @@ tar(
     srcs = ["//:LICENSE"],
 )
 
+filegroup(
+    name = "all-sources",
+    srcs = [
+        "//src/apps:cc-sources",
+        "//src/geometry:cc-sources",
+    ],
+)
+
 sh_binary(
     name = "analyzer",
     srcs = ["//tools:analyzer.sh"],
@@ -47,9 +55,7 @@ static_analysis(
     # (repository rule / macro / etc) to avoid listing every source file manually;
     # remember, glob does not match files in subpackages so cannot use glob(["**/*.cc"]).
     srcs = [
-        "//src/apps:main.cc",
-        "//src/apps:math.cc",
-        "//src/geometry:rectangle.cc",
+        ":all-sources",
     ],
     analyzer = ":analyzer",
 )
