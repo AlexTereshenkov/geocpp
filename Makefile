@@ -11,4 +11,4 @@ build:
 sa:
 	bazel clean
 	bazel build //:analysis
-	cat $(shell bazel info output_path)/k8-fastbuild/bin/*.txt
+	cat bazel-bin/analysis.results.txt
