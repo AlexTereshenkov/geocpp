@@ -10,6 +10,7 @@ build:
 
 sa:
 	bazel clean
+	bazel build //generated:header-generated-genrule
 	bazel run @hedron_compile_commands//:refresh_all
-	bazel build --config=sa //src/...
-	find bazel-bin/src/**/oclint-analysis/** -name 'analyzed*.txt' -exec cat {} + | sort | uniq
+	bazel build --config=oclint //src/...
+	find bazel-bin/src/**/oclint-analysis/** -name 'analyzed*.txt' -exec cat {} +
