@@ -8,7 +8,7 @@ build:
 	bazel run //src/apps:math -- 1
 	bazel run //src/apps:genheader
 
-sa:
+oclint:
 	bazel clean
 	bazel build //generated:header-generated-genrule
 	bazel run @hedron_compile_commands//:refresh_all
