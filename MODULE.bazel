@@ -3,6 +3,8 @@ module(
     repo_name = "geocpp",
 )
 
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 # Bazel specific
 bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_shell", version = "0.5.0")
@@ -52,9 +54,6 @@ use_repo(llvm, "llvm_toolchain")
 # line using the `--extra_toolchains` flag
 # register_toolchains("@llvm_toolchain//:all")
 
-# Add direct HTTP archive dependency on a library that is not built with Bazel
-http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 # the archive file is going to be extracted at build time and the `build_file`
 # is going to be placed at the output directory (bazel-geocpp/external/+_repo_rules+gcem)
 http_archive(
@@ -94,3 +93,12 @@ oci.pull(
 
 # Expose the base image
 use_repo(oci, "cc-image", "cc-image_linux_amd64")
+
+# static analysis of C++ sources
+http_archive(
+    name = "oclint_prebuilt",
+    build_file = "@//tools/oclint:BUILD.bazel.gen",
+    sha256 = "ba121724d3295f71f598ba7389b7fb5c5158013c8833440c345f6962f3dd3780",
+    strip_prefix = "oclint-22.02",
+    urls = ["https://github.com/oclint/oclint/releases/download/v22.02/oclint-22.02-llvm-13.0.1-x86_64-linux-ubuntu-20.04.tar.gz"],
+)

@@ -3,6 +3,12 @@ load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg/private/tar:tar.bzl", "pkg_tar")
 load("@tar.bzl", "tar")
 
+filegroup(
+    name = "compilation-db",
+    srcs = ["compile_commands.json"],
+    visibility = ["//visibility:public"],
+)
+
 buildifier(
     name = "buildifier",
     lint_mode = "fix",
