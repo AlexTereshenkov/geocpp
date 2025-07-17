@@ -11,3 +11,11 @@ sh_binary(
         "@oclint_prebuilt//:oclint_bundle",
     ],
 )
+
+sh_binary(
+    name = "oclint_metadata",
+    srcs = ["run_oclint_metadata.sh"],
+    data = [
+        "@oclint_prebuilt//:oclint_bundle",
+    ],
+)
