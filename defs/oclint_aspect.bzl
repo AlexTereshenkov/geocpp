@@ -3,12 +3,14 @@ load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 def _analyze_aspect_impl(target, ctx):
     outputs = []
 
+    # "hdrs" are not of interest as OCLint analyze the .cpp files that include those headers
     if hasattr(ctx.rule.attr, "srcs"):
         for src in ctx.rule.attr.srcs:
             for file in src.files.to_list():
                 output_file = ctx.actions.declare_file("oclint-analysis/analyzed_%s.txt" % file.basename)
                 ctx.actions.run(
                     executable = ctx.executable._analyzer,
+                    # arguments passed to a Shell script (input file to analyze and where to write report)
                     arguments = [file.path, output_file.path],
                     inputs = [file],
                     outputs = [output_file],
