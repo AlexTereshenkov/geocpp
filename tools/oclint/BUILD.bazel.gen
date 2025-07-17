@@ -1,0 +1,20 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "oclint_bin",
+    srcs = ["bin/oclint-22.02"],
+)
+
+filegroup(
+    name = "oclint_lib",
+    srcs = glob(["lib/**"]),
+)
+
+# convenience target
+filegroup(
+    name = "oclint_bundle",
+    srcs = [
+        ":oclint_bin",
+        ":oclint_lib",
+    ],
+)

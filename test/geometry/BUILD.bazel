@@ -24,6 +24,17 @@ cc_test_custom(
 )
 
 cc_test_custom(
+    name = "circle-gtest-test",
+    srcs = ["circle_gtest_test.cc"],
+    linkstatic = (True, False),
+    deps = [
+        "//src/geometry:circle",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test_custom(
     name = "rectangle-catch2-test",
     srcs = ["rectangle_catch2_test.cc"],
     linkstatic = (True, False),

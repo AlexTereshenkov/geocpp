@@ -1,0 +1,21 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+sh_binary(
+    name = "oclint",
+    srcs = ["run_oclint.sh"],
+    data = [
+        # TODO: make sh_binary depend on presence of the compile_commands.json
+        "//:compilation-db",
+        "@oclint_prebuilt//:oclint_bundle",
+    ],
+)
+
+sh_binary(
+    name = "oclint_metadata",
+    srcs = ["run_oclint_metadata.sh"],
+    data = [
+        "@oclint_prebuilt//:oclint_bundle",
+    ],
+)

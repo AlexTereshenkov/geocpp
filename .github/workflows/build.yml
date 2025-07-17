@@ -26,7 +26,9 @@ jobs:
           repository-cache: true
 
       - name: Build
-        run: bazel build //...
+        run: |
+          bazel run @hedron_compile_commands//:refresh_all
+          bazel build //...
 
       - name: Test
         run: bazel test //...
@@ -48,6 +50,11 @@ jobs:
           disk-cache: true
           # Share repository cache between workflows.
           repository-cache: true
+
+      - name: bazel-oclint
+        run: |
+          shopt -s globstar
+          make oclint
 
       - name: bazel-dwyu
         run: |
@@ -179,6 +186,7 @@ jobs:
 
       - name: Test
         run: |
+          bazel run @hedron_compile_commands//:refresh_all
           mkdir -p /tmp/zig-cache && bazel test \
             --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-amd64 \
