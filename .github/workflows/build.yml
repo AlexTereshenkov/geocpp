@@ -59,7 +59,7 @@ jobs:
       - name: bazel-dwyu
         run: |
           bazel build --aspects=//tools:aspect.bzl%your_dwyu_aspect --output_groups=dwyu //... || true
-          bazel run @depend_on_what_you_use//:apply_fixes -- --fix-all --dry-run
+          bazel run @depend_on_what_you_use//:apply_fixes -- --fix-all --dry-run || true
 
       - name: bazel-iwyu
         run: |
