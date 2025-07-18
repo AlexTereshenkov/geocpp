@@ -1,0 +1,17 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+load("@rules_python//python:defs.bzl", "py_library")
+
+pybind_extension(
+    name = "cartesian",
+    srcs = [
+        "cartesian.cc",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "cartesian_lib",
+    data = [":cartesian"],
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)
