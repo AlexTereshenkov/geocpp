@@ -63,3 +63,5 @@ common:docker-container --experimental_enable_docker_sandbox
 common:docker-container --experimental_docker_image="docker-container-build-env:latest"
 
 build:oclint --aspects=defs/oclint_aspect.bzl%analyze_aspect --output_groups=paths --output_groups=metadata
+
+build:friendly --//:friendly_flag

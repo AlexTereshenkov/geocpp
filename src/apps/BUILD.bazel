@@ -4,6 +4,20 @@ load("//defs:release.bzl", "release_application")
 
 package(default_visibility = ["//visibility:public"])
 
+config_setting(
+    name = "friendly",
+    flag_values = {"//:friendly_flag": "1"},
+)
+
+cc_binary(
+    name = "greeter",
+    srcs = ["greeter.cc"],
+    copts = select({
+        ":friendly": ["-DFRIENDLY"],
+        "//conditions:default": [],
+    }),
+)
+
 release_application(
     name = "release",
     srcs = ["main.cc"],
