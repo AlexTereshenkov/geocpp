@@ -15,3 +15,17 @@ oclint:
 	bazel build --config=oclint //src/...
 	find bazel-bin/src/**/oclint-analysis/** -name 'analyzed*.txt' -exec cat {} +
 	find bazel-bin/src/**/oclint-analysis/** -name 'metadata.json' -exec cat {} +
+
+patched:
+	bazel build //src/apps:math --define=sin=true
+	# calculate sin
+	bazel-bin/src/apps/math 1
+
+	bazel build //src/apps:math
+	# calculate cos
+	bazel-bin/src/apps/math 1
+
+	bazel clean
+	bazel build //src/apps:math --define=sin=true
+	# calculate sin
+	bazel-bin/src/apps/math 1
