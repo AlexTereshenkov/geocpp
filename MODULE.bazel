@@ -5,6 +5,8 @@ module(
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
 # Bazel specific
 bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_shell", version = "0.5.0")
@@ -64,6 +66,20 @@ http_archive(
     sha256 = "8e71a9f5b62956da6c409dda44b483f98c4a98ae72184f3aa4659ae5b3462e61",
     strip_prefix = "gcem-1.18.0",
     urls = ["https://github.com/kthohr/gcem/archive/v1.18.0.tar.gz"],
+)
+
+http_file(
+    name = "zstd_cli",
+    executable = True,
+    sha256 = "190c196b46883a234238d9c52a211c1494df79bb170fbe30c6fc22639d5d4731",
+    url = "https://github.com/aspect-build/zstd-prebuilt/releases/download/v1.5.6-bcr2/zstd_linux_amd64",
+)
+
+http_archive(
+    name = "yq_cli",
+    build_file = "@//tools/yq:BUILD.bazel.gen",
+    sha256 = "09a40787e527005fce869dac01146fcc2473d4e24074a841baf502b8c87fb6e2",
+    url = "https://github.com/mikefarah/yq/releases/download/v4.48.1/yq_linux_amd64.tar.gz",
 )
 
 toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")

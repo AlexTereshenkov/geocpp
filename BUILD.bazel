@@ -38,3 +38,6 @@ tar(
     name = "archive-lean",
     srcs = ["//:LICENSE"],
 )
+
+# to access by a `py_binary` target under `data`
+exports_files(["adhoc/data.json"])
