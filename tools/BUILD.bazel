@@ -33,6 +33,8 @@ py_binary(
         "//compiled:dates.so",
         # local file (not in a Bazel package)
         "//:adhoc/data.json",
+        # build target (to be built by Bazel)
+        "//src/geometry:circle"
     ],
     env = {
         "ZSTD_COMPRESSION_LEVEL": "10",
