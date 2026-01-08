@@ -17,3 +17,6 @@ cc_import(
     # to be linked into any binary that depends on it
     alwayslink = True,
 )
+
+# to access by a `py_binary` target under `data`
+exports_files(["dates.so"])
