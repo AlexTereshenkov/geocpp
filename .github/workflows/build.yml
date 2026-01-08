@@ -33,6 +33,11 @@ jobs:
       - name: Test
         run: bazel test //...
 
+      - name: Runfiles
+        env:
+          PYTHONUNBUFFERED: 1
+        run: bazel run //tools:archiver
+
   lint-host:
     runs-on: ubuntu-24.04
 

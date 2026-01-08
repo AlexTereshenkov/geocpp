@@ -1,3 +1,4 @@
+load("@rules_python//python:defs.bzl", "py_binary")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 package(default_visibility = ["//visibility:public"])
@@ -17,5 +18,29 @@ sh_binary(
     srcs = ["run_oclint_metadata.sh"],
     data = [
         "@oclint_prebuilt//:oclint_bundle",
+    ],
+)
+
+py_binary(
+    name = "archiver",
+    srcs = ["archiver.py"],
+    data = [
+        # http_file
+        "@zstd_cli//file",
+        # http_archive
+        "@yq_cli//:yq_linux_amd64",
+        # local file (in a Bazel package)
+        "//compiled:dates.so",
+        # local file (not in a Bazel package)
+        "//:adhoc/data.json",
+        # build target (to be built by Bazel)
+        "//src/geometry:circle"
+    ],
+    env = {
+        "ZSTD_COMPRESSION_LEVEL": "10",
+    },
+    tags = ["manual"],
+    deps = [
+        "@rules_python//python/runfiles",
     ],
 )
