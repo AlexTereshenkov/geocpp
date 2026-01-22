@@ -27,7 +27,7 @@ jobs:
 
       - name: Build
         run: |
-          bazel run @hedron_compile_commands//:refresh_all
+          # bazel run @hedron_compile_commands//:refresh_all
           bazel build //...
 
       - name: Test
@@ -87,7 +87,7 @@ jobs:
           bazel build //generated:header-generated-genrule 
   
           # this is necessary for clang-tidy to find all the includes
-          bazel run @hedron_compile_commands//:refresh_all
+          # bazel run @hedron_compile_commands//:refresh_all
           
           # rules_multitool let you run a tool in the workspace root
           shopt -s globstar
@@ -186,7 +186,7 @@ jobs:
 
       - name: Test
         run: |
-          bazel run @hedron_compile_commands//:refresh_all
+          # bazel run @hedron_compile_commands//:refresh_all
           mkdir -p /tmp/zig-cache && bazel test \
             --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
             --config=hermetic-linux-amd64 \
