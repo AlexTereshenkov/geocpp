@@ -1,6 +1,8 @@
 # the contents of this file is going to be inserted into the extracted
 # repository https://github.com/kthohr/gcem so that this becomes a dependency
 # Bazel targets can depend on
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
 package(default_visibility = ["//visibility:public"])
 
 # one has to inspect the third-party library to understand what build metadata needs to be created;
