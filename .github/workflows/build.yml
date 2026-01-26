@@ -38,6 +38,9 @@ jobs:
           PYTHONUNBUFFERED: 1
         run: bazel run //tools:archiver
 
+      - name: Topiary
+        run: bazel run @multitool//tools/topiary:workspace_root -- format tools/multitool.lock.json
+
   lint-host:
     runs-on: ubuntu-24.04
 
