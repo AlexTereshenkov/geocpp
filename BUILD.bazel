@@ -41,3 +41,11 @@ tar(
 
 # to access by a `py_binary` target under `data`
 exports_files(["adhoc/data.json"])
+
+
+genrule(
+    name = "use_repo_genrule",
+    srcs = ["@generated_repo//:output.txt"],
+    outs = ["copied.txt"],
+    cmd = "cp $(SRCS) $@",
+)
