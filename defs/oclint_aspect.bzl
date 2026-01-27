@@ -1,5 +1,6 @@
 load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 
+# buildifier: disable=unused-variable
 def _analyze_aspect_impl(target, ctx):
     outputs = []
 

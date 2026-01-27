@@ -3,6 +3,8 @@ load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg/private/tar:tar.bzl", "pkg_tar")
 load("@tar.bzl", "tar")
 
+BUILDIFIER_EXCLUDE_PATTERNS = ["./.clwb/**"]
+
 filegroup(
     name = "compilation-db",
     srcs = ["compile_commands.json"],
@@ -11,11 +13,27 @@ filegroup(
 
 buildifier(
     name = "buildifier",
+    exclude_patterns = BUILDIFIER_EXCLUDE_PATTERNS,
     lint_mode = "fix",
     mode = "fix",
 )
 
-gazelle(name = "gazelle")
+buildifier(
+    name = "buildifier-check",
+    exclude_patterns = BUILDIFIER_EXCLUDE_PATTERNS,
+    lint_mode = "warn",
+    lint_warnings = [
+        "-module-docstring",
+        "-function-docstring",
+        "-bzl-visibility",
+    ],
+    mode = "check",
+)
+
+gazelle(
+    name = "gazelle",
+    args = ["--exclude=pbs"],
+)
 
 genrule(
     name = "clang_format",

@@ -86,6 +86,11 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
+      - name: build-lint
+        run: |
+          bazel run //:buildifier-check
+          bazel run //:gazelle
+
       - name: bazel-oclint
         run: |
           shopt -s globstar
