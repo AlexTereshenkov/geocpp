@@ -3,6 +3,7 @@ build:
 	bazel mod tidy
 	bazel test //...
 	bazel run //:buildifier
+	# do not create BUILD.bazel files in the pbs/ directory
 	bazel run //:gazelle -- --exclude=pbs
 	bazel run //src/apps:release.app -- 3 4
 	bazel run //src/apps:math -- 1

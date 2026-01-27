@@ -132,7 +132,7 @@ http_archive(
     urls = ["https://github.com/oclint/oclint/releases/download/v22.02/oclint-22.02-llvm-13.0.1-x86_64-linux-ubuntu-20.04.tar.gz"],
 )
 
-# Load and use the repo rule
+
 dates_repo_rule = use_repo_rule("//defs:dates_repo_rule.bzl", "dates_repo_rule")
 
 dates_repo_rule(name = "dates_repo_rule")
