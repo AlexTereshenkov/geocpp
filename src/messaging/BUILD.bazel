@@ -1,0 +1,21 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
+
+#
+compile_pip_requirements(
+    name = "requirements",
+    src = "requirements.in",
+    requirements_txt = "requirements.txt",
+)
+
+py_binary(
+    name = "messenger",
+    srcs = [
+        "messenger.py",
+        "//:message_pb_genrule",
+    ],
+    imports = ["."],
+    deps = [
+        "@pypi//protobuf",
+    ],
+)

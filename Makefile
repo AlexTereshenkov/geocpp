@@ -3,10 +3,11 @@ build:
 	bazel mod tidy
 	bazel test //...
 	bazel run //:buildifier
-	bazel run //:gazelle
+	bazel run //:gazelle -- --exclude=pbs
 	bazel run //src/apps:release.app -- 3 4
 	bazel run //src/apps:math -- 1
 	bazel run //src/apps:genheader
+	bazel run //src/messaging:messenger
 
 oclint:
 	bazel clean

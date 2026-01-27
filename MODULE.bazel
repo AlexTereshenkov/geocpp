@@ -13,7 +13,7 @@ bazel_dep(name = "rules_shell", version = "0.5.0")
 bazel_dep(name = "rules_cc", version = "0.2.16")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "rules_oci", version = "2.2.6")
-bazel_dep(name = "rules_python", version = "1.5.1")
+bazel_dep(name = "rules_python", version = "1.8.2")
 bazel_dep(name = "pybind11_bazel", version = "3.0.0")
 bazel_dep(name = "rules_go", version = "0.59.0")
 
@@ -133,5 +133,23 @@ http_archive(
 )
 
 # Load and use the repo rule
-my_repo = use_repo_rule("//tools:my_repo_rule.bzl", "my_repo")
-my_repo(name = "generated_repo")
+dates_repo_rule = use_repo_rule("//defs:dates_repo_rule.bzl", "dates_repo_rule")
+
+dates_repo_rule(name = "dates_repo_rule")
+
+http_archive(
+    name = "protoc_prebuilt",
+    build_file_content = """exports_files(["bin/protoc"])""",
+    sha256 = "c0040ea9aef08fdeb2c74ca609b18d5fdbfc44ea0042fcfbfb38860d35f7dd66",
+    urls = ["https://github.com/protocolbuffers/protobuf/releases/download/v33.4/protoc-33.4-linux-x86_64.zip"],
+)
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+python.toolchain(python_version = "3.12")
+pip.parse(
+    hub_name = "pypi",
+    python_version = "3.12",
+    requirements_lock = "//src/messaging:requirements.txt",
+)
+use_repo(pip, "pypi")
