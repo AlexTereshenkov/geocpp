@@ -41,6 +41,33 @@ jobs:
       - name: Topiary
         run: bazel run @multitool//tools/topiary:workspace_root -- format tools/multitool.lock.json
 
+  repository-rules:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # from https://github.com/bazel-contrib/setup-bazel
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Share build cache between workflows.
+          disk-cache: true
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      - name: Repository rule implementation
+        run: |
+          bazel build //:save-the-date-genrule --repo_env=PATH=%bazel_workspace%/tools:$PATH
+          cat bazel-bin/now-copied.json
+
+      - name: Using compiled protobuf from Python (with pre-compiled protoc)
+        run: |
+          bazel run //src/messaging:messenger
+
   lint-host:
     runs-on: ubuntu-24.04
 

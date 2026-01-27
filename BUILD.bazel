@@ -41,3 +41,29 @@ tar(
 
 # to access by a `py_binary` target under `data`
 exports_files(["adhoc/data.json"])
+
+genrule(
+    name = "save-the-date-genrule",
+    srcs = ["@dates_repo_rule//:now.json"],
+    outs = ["now-copied.json"],
+    # https://bazel.build/reference/be/make-variables#predefined_genrule_variables
+    cmd = "cp $(SRCS) $@",
+    tags = ["manual"],
+)
+
+genrule(
+    name = "message_pb_genrule",
+    srcs = [
+        "@protoc_prebuilt//:bin/protoc",
+        "pbs/message.proto",
+    ],
+    outs = ["pbs/message_pb2.py"],
+    # https://bazel.build/reference/be/make-variables#predefined_genrule_variables
+    cmd = """
+      mkdir -p $(RULEDIR)/pbs && \
+      $(location @protoc_prebuilt//:bin/protoc) \
+        --python_out=$(RULEDIR) \
+        $(location pbs/message.proto)
+    """,
+    visibility = ["//visibility:public"],
+)
