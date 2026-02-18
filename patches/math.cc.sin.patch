@@ -1,0 +1,14 @@
+diff --git a/src/apps/math.cc b/src/apps/math.cc
+index 41283af..f3823ff 100644
+--- a/src/apps/math.cc
++++ b/src/apps/math.cc
+@@ -5,7 +5,7 @@
+ 
+ int main(int argc, char *argv[]) {
+   double value = std::stod(argv[1]);
+-  double result = gcem::cos(value);
+-  std::cout << "The cos of " << value << " is: " << result << std::endl;
++  double result = gcem::sin(value);
++  std::cout << "The sin of " << value << " is: " << result << std::endl;
+   return 0;
+ }

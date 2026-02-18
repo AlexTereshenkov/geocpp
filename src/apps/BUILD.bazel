@@ -18,9 +18,28 @@ sh_binary(
     srcs = ["release_metadata.sh"],
 )
 
+config_setting(
+    name = "sin",
+    values = {"define": "sin=true"},
+)
+
+genrule(
+    name = "math_maybe_patched",
+    srcs = [
+        "math.cc",
+        "//patches:math.cc.sin.patch",
+    ],
+    outs = ["math_maybe_patched.cc"],
+    cmd = select({
+        ":sin": "cp $(location math.cc) $@ && patch $@ < $(location //patches:math.cc.sin.patch)",
+        "//conditions:default": "cp $(location math.cc) $@",
+    }),
+    tools = [],
+)
+
 cc_binary(
     name = "math",
-    srcs = ["math.cc"],
+    srcs = [":math_maybe_patched"],
     deps = [
         "@gcem",
     ],
