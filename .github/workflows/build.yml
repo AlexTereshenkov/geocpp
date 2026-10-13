@@ -112,7 +112,7 @@ jobs:
         run: |
           # running build actions in a sandbox does not seem to be supported by toolchains_llvm
           # docker build -t docker-container-build-env -f platforms/advanced/Dockerfile --load .
-          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          wget https://launchpad.net/ubuntu/+archive/primary/+files/libtinfo5_6.3-2ubuntu0.1_amd64.deb
           sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
           shopt -s globstar
           bazel run //:clang-format -- --verbose --dry-run -Werror $(realpath **/*.cc **/*.hpp)
@@ -199,7 +199,7 @@ jobs:
 
       - name: Build ${{ matrix.arch }}
         run: |
-          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          wget https://launchpad.net/ubuntu/+archive/primary/+files/libtinfo5_6.3-2ubuntu0.1_amd64.deb
           sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
           bazel build \
             --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1 \
